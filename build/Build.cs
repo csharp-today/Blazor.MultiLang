@@ -3,7 +3,7 @@ using Nuke.Useful.Builds;
 
 [CheckBuildProjectConfigurations]
 [UnsetVisualStudioEnvironmentVariables]
-class Build : SimpleBuild
+class Build : AzureDevOpsLibraryBuild
 {
-    public static int Main () => Execute<Build>(x => x.Compile);
+    public static int Main () => Execute<Build>(x => x.BuildAzureDevOpsLibrary);
 }
