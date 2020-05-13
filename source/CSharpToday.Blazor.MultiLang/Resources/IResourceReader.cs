@@ -5,6 +5,7 @@ namespace CSharpToday.Blazor.MultiLang.Resources
 {
     public interface IResourceReader
     {
-        IEnumerable<string> GetResources(Assembly assembly);
+        string GetResourceContext(string resourcePath);
+        IEnumerable<string> GetResources();
     }
 }

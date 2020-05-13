@@ -7,6 +7,7 @@ namespace CSharpToday.Blazor.MultiLang.Resources
     {
         public static IServiceCollection AddResources(this IServiceCollection services) => services
             .AddTransient<IResourceReader, ResourceReader>()
+            .AddTransient<IResourceReaderFactory, ResourceReaderFactory>()
             .AddTransient<IResourceTreeBuilder, ResourceTreeBuilder>();
     }
 }
