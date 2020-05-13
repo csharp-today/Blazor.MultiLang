@@ -5,13 +5,8 @@ namespace CSharpToday.Blazor.MultiLang.Resources
 {
     internal class ResourceReader : IResourceReader
     {
-        public IEnumerable<string> GetResources(Assembly assembly = null)
+        public IEnumerable<string> GetResources(Assembly assembly)
         {
-            if (assembly is null)
-            {
-                assembly = Assembly.GetExecutingAssembly();
-            }
-
             return assembly.GetManifestResourceNames();
         }
     }
