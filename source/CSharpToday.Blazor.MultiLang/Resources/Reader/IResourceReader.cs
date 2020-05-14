@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Reflection;
 
-namespace CSharpToday.Blazor.MultiLang.Resources
+namespace CSharpToday.Blazor.MultiLang.Resources.Reader
 {
     public interface IResourceReader
     {

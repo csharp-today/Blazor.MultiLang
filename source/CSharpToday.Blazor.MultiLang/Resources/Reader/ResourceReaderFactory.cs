@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CSharpToday.Blazor.MultiLang.Resources
+namespace CSharpToday.Blazor.MultiLang.Resources.Reader
 {
     internal class ResourceReaderFactory : IResourceReaderFactory
     {
