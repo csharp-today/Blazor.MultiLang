@@ -1,5 +1,6 @@
 ﻿using Ninject;
 using Ninject.MockingKernel.NSubstitute;
+using Shouldly;
 using System;
 
 namespace CSharpToday.Blazor.MultiLang.Test
@@ -11,5 +12,7 @@ namespace CSharpToday.Blazor.MultiLang.Test
         protected T Get<T>() => MockingKernel.Get<T>();
 
         public void Dispose() => MockingKernel.Dispose();
+
+        protected void ValuesAreTheSame(string expected, string value) => value.ShouldBe(expected);
     }
 }
