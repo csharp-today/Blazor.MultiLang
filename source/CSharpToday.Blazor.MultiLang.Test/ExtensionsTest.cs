@@ -18,6 +18,9 @@ namespace CSharpToday.Blazor.MultiLang.Test
         public ExtensionsTest() => _provider = new ServiceCollection().AddResources().BuildServiceProvider();
 
         [TestMethod]
+        public void Create_IGroupConverter() => Validate<IGroupConverter>();
+
+        [TestMethod]
         public void Create_IJsonValueProviderFactory() => Validate<IJsonValueProviderFactory>();
 
         [TestMethod]
