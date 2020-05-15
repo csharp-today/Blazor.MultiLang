@@ -9,7 +9,8 @@ namespace Microsoft.Extensions.DependencyInjection
             .AddResources()
             .AddPublicItems();
 
-        private static IServiceCollection AddPublicItems(this IServiceCollection services) =>
-            services.Add<IMultiLang, MultiLang>();
+        private static IServiceCollection AddPublicItems(this IServiceCollection services) => services
+            .Add<ILanguageFactory, LanguageFactory>()
+            .Add<IMultiLang, MultiLang>();
     }
 }

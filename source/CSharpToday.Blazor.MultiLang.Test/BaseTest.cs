@@ -13,6 +13,6 @@ namespace CSharpToday.Blazor.MultiLang.Test
 
         public void Dispose() => MockingKernel.Dispose();
 
-        protected void ValuesAreTheSame(string expected, string value) => value.ShouldBe(expected);
+        protected void ValuesAreTheSame<T>(T expected, T value) => value.ShouldBe(expected);
     }
 }

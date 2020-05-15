@@ -83,7 +83,13 @@ namespace CSharpToday.Blazor.MultiLang.Test
 
         private string CreateLanguageAndPassCode(string language)
         {
-            SetGroups(GetValidGroup(language));
+            var group = GetValidGroup(language);
+            SetGroups(group);
+
+            var lang = Get<ILanguage>();
+            lang.Code.Returns(language);
+            Get<ILanguageFactory>().GetLanguage(Assembly, group).Returns(lang);
+
             return language;
         }
 

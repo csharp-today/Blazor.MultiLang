@@ -9,6 +9,9 @@ namespace CSharpToday.Blazor.MultiLang.Test
         protected override void AddServices(IServiceCollection services) => services.AddBlazorMultiLang();
 
         [TestMethod]
+        public void Create_ILanguageFactory() => Validate<ILanguageFactory>();
+
+        [TestMethod]
         public void Create_IMultiLang() => Validate<IMultiLang>();
     }
 }
