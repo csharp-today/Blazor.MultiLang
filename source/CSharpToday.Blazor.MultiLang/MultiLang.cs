@@ -19,6 +19,17 @@ namespace CSharpToday.Blazor.MultiLang
 
         public MultiLang(IResourceGroupFactory groupFactory) => _groupFactory = groupFactory;
 
+        public ILanguage GetLanguage(Assembly assembly, string language)
+        {
+            var supportedLanguages = GetSupportedLanguages(assembly);
+            if (!supportedLanguages.Contains(language))
+            {
+                throw new LanguageNotSupported(assembly, language, supportedLanguages);
+            }
+
+            return new Language { Code = language };
+        }
+
         public IEnumerable<string> GetSupportedLanguages(Assembly assembly) =>
             GetGroups(assembly)
             .Where(g => IsLanguageGroup(g))

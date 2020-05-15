@@ -3,31 +3,29 @@ using LucidCode;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 using Shouldly;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace CSharpToday.Blazor.MultiLang.Test
 {
     [TestClass]
     public class MultiLangTest : BaseTest
     {
-        private const string ValidExtension = ".json";
+        private Assembly Assembly => GetType().Assembly;
+
+        [TestMethod]
+        public void Get_Language() => LucidTest
+            .DefineExpected("pl")
+            .Arrange(CreateLanguageAndPassCode)
+            .Act(GetLanguage)
+            .Assert((expectedLanguage, language) => language.Code.ShouldBe(expectedLanguage));
 
         [TestMethod]
         public void Get_Only_JSON_Files() => LucidTest
             .DefineExpected("pl")
-            .Arrange(lang =>
-            {
-                var group1 = Substitute.For<IResourceGroup>();
-                group1.Name.Returns(lang);
-                group1.Extension.Returns(ValidExtension);
-
-                var group2 = Substitute.For<IResourceGroup>();
-                group2.Name.Returns("some");
-                group2.Extension.Returns(".txt");
-
-                Get<IResourceGroupFactory>().GetResourceGroups(null).ReturnsForAnyArgs(new[] { group1, group2 });
-            })
+            .Arrange(lang => SetGroups(GetValidGroup(lang), GetGroup("some", ".txt")))
             .Act(GetSupportedLanguages)
             .Assert((expectedLanguage, supportedLanguages) =>
             {
@@ -38,13 +36,7 @@ namespace CSharpToday.Blazor.MultiLang.Test
         [TestMethod]
         public void Language_From_ResourceGroup() => LucidTest
             .DefineExpected("pl")
-            .Arrange(lang =>
-            {
-                var group = Get<IResourceGroup>();
-                group.Name.Returns(lang);
-                group.Extension.Returns(ValidExtension);
-                Get<IResourceGroupFactory>().GetResourceGroups(null).ReturnsForAnyArgs(new[] { group });
-            })
+            .Arrange(lang => SetGroups(GetValidGroup(lang)))
             .Act(GetSupportedLanguages)
             .Assert((expectedLanguage, supportedLanguages) =>
             {
@@ -52,7 +44,79 @@ namespace CSharpToday.Blazor.MultiLang.Test
                 supportedLanguages.First().ShouldBe(expectedLanguage);
             });
 
+        [TestMethod]
+        public void Throw_Exception_When_Not_Supported_Language() => LucidTest
+            .DefineExpected("xyz")
+            .Arrange(param => param)
+            .Act(GetLanguageException)
+            .Assert((language, exception) =>
+            {
+                exception.ShouldBeOfType<LanguageNotSupported>();
+
+                var notSupportedEx = (LanguageNotSupported)exception;
+                notSupportedEx.Assembly.ShouldBe(Assembly);
+                notSupportedEx.Language.ShouldBe(language);
+                notSupportedEx.SupportedLanguages.ShouldNotBeNull();
+                notSupportedEx.SupportedLanguages.Count().ShouldBe(0);
+            });
+
+        [TestMethod]
+        public void Throw_Exception_With_Supported_Languages() => LucidTest
+            .DefineExpected(new[] { "pl", "en" })
+            .Arrange(languages =>
+            {
+                var groups = new List<IResourceGroup>();
+                foreach (var lang in languages)
+                {
+                    groups.Add(GetValidGroup(lang));
+                }
+                SetGroups(groups.ToArray());
+            })
+            .Act(() => (LanguageNotSupported)GetLanguageException("otherLanguage"))
+            .Assert((expectedLanguages, exception) =>
+            {
+                foreach (var language in expectedLanguages)
+                {
+                    exception.SupportedLanguages.ShouldContain(language);
+                }
+            });
+
+        private string CreateLanguageAndPassCode(string language)
+        {
+            SetGroups(GetValidGroup(language));
+            return language;
+        }
+
+        private IResourceGroup GetGroup(string name, string extension)
+        {
+            var group = Substitute.For<IResourceGroup>();
+            group.Name.Returns(name);
+            group.Extension.Returns(extension);
+            return group;
+        }
+
+        private ILanguage GetLanguage(string language) =>
+            Get<MultiLang>().GetLanguage(Assembly, language);
+
+        private Exception GetLanguageException(string language)
+        {
+            try
+            {
+                GetLanguage(language);
+                return null;
+            }
+            catch (Exception ex)
+            {
+                return ex;
+            }
+        }
+
         private IEnumerable<string> GetSupportedLanguages() =>
-            Get<MultiLang>().GetSupportedLanguages(this.GetType().Assembly);
+            Get<MultiLang>().GetSupportedLanguages(Assembly);
+
+        private IResourceGroup GetValidGroup(string name) => GetGroup(name, ".json");
+
+        private void SetGroups(params IResourceGroup[] groups) =>
+            Get<IResourceGroupFactory>().GetResourceGroups(Assembly).Returns(groups);
     }
 }
