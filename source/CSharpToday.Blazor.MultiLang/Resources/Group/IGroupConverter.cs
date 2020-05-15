@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace CSharpToday.Blazor.MultiLang.Resources.Group
 {
-    public interface IGroupConverter
+    internal interface IGroupConverter
     {
         IValueProvider ConvertToValueProvider(Assembly assembly, IResourceGroup group);
     }

@@ -2,7 +2,7 @@
 
 namespace CSharpToday.Blazor.MultiLang.Resources.Tree
 {
-    public interface IResourceTree
+    internal interface IResourceTree
     {
         IEnumerable<IResourceTree> Children { get; }
         string FullName { get; }

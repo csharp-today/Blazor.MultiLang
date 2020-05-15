@@ -2,7 +2,7 @@
 
 namespace CSharpToday.Blazor.MultiLang.Resources.Tree
 {
-    public interface IResourceTreeBuilder
+    internal interface IResourceTreeBuilder
     {
         IResourceTree BuildTree(IEnumerable<string> resources);
     }

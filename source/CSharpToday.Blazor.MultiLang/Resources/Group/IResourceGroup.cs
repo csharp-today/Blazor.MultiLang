@@ -2,7 +2,7 @@
 
 namespace CSharpToday.Blazor.MultiLang.Resources.Group
 {
-    public interface IResourceGroup
+    internal interface IResourceGroup
     {
         public string Extension { get; }
         public string FullName { get; }

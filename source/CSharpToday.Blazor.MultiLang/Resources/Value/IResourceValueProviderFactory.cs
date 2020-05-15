@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace CSharpToday.Blazor.MultiLang.Resources.Value
 {
-    public interface IResourceValueProviderFactory
+    internal interface IResourceValueProviderFactory
     {
         IValueProvider GetResrouceValueProvider(Assembly assembly, IResourceTree resource);
     }
