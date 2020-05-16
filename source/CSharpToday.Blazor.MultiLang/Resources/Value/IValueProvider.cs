@@ -1,6 +1,6 @@
 ﻿namespace CSharpToday.Blazor.MultiLang.Resources.Value
 {
-    public interface IValueProvider
+    internal interface IValueProvider
     {
         string GetValue(string key);
     }

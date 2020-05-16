@@ -21,6 +21,10 @@ namespace CSharpToday.Blazor.MultiLang
             (Assembly, _group, _valueProvider) =
             (assembly, group, new Lazy<IValueProvider>(() => groupConverter.ConvertToValueProvider(assembly, group)));
 
-        public string GetValue(string key) => _valueProvider.Value.GetValue(key);
+        public string GetTranslation(string name) => _valueProvider.Value.GetValue(name);
+
+        public ITypedLanguage GetTypedLanguage(string type) => new TypedLanguage(this, type);
+        public ITypedLanguage GetTypedLanguage<T>() => GetTypedLanguage(typeof(T).FullName);
+        public ITypedLanguage GetTypedLanguage<T>(T obj) => GetTypedLanguage<T>();
     }
 }

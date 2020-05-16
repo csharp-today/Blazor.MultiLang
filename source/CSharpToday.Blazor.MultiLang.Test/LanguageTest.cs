@@ -49,7 +49,7 @@ namespace CSharpToday.Blazor.MultiLang.Test
                     Key
                 };
             })
-            .Act(param => GetLanguage(param.Assembly, GetGroup(param.Code), param.Converter).GetValue(param.Key))
+            .Act(param => GetLanguage(param.Assembly, GetGroup(param.Code), param.Converter).GetTranslation(param.Key))
             .Assert(ValuesAreTheSame);
 
         private IResourceGroup GetGroup(string name)
