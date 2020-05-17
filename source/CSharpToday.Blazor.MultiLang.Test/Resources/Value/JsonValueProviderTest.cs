@@ -8,6 +8,11 @@ namespace CSharpToday.Blazor.MultiLang.Test.Resources.Value
     [TestClass]
     public class JsonValueProviderTest
     {
+        [TestMethod]
+        public void Get_Null_When_Json_Is_Null() => LucidTest
+            .Act(() => new JsonValueProvider(null).GetValue("any"))
+            .Assert(value => value.ShouldBeNull());
+
         [DataTestMethod]
         [DataRow("SimpleName")]
         [DataRow("Advanced.Property.Name")]

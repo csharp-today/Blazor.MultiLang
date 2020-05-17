@@ -7,9 +7,9 @@ namespace CSharpToday.Blazor.MultiLang.Resources.Value
     {
         private readonly JsonDocument _json;
 
-        public JsonValueProvider(string json) => _json = JsonDocument.Parse(json);
+        public JsonValueProvider(string json) => _json = json is { } ? JsonDocument.Parse(json) : null;
 
-        public string GetValue(string key) => GetValue(_json.RootElement, key);
+        public string GetValue(string key) => _json is { } ? GetValue(_json.RootElement, key) : null;
 
         private string GetValue(JsonElement json, string key)
         {

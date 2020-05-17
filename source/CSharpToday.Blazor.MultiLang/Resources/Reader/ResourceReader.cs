@@ -12,6 +12,11 @@ namespace CSharpToday.Blazor.MultiLang.Resources.Reader
 
         public string GetResourceContext(string resourcePath)
         {
+            if (string.IsNullOrEmpty(resourcePath))
+            {
+                return null;
+            }
+
             using var stream = _assembly.GetManifestResourceStream(resourcePath);
             using var reader = new StreamReader(stream);
             return reader.ReadToEnd();
