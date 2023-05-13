@@ -1,7 +1,6 @@
 ﻿using CSharpToday.Blazor.MultiLang.Resources.Group;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -9,11 +8,6 @@ namespace CSharpToday.Blazor.MultiLang
 {
     internal class MultiLang : IMultiLang
     {
-        private static readonly Lazy<string[]> _allLanguages = new Lazy<string[]>(() => CultureInfo
-            .GetCultures(CultureTypes.AllCultures)
-            .Select(ci => ci.Name)
-            .ToArray());
-
         private readonly Dictionary<Assembly, IResourceGroup[]> _groupCache = new Dictionary<Assembly, IResourceGroup[]>();
         private readonly IResourceGroupFactory _groupFactory;
         private readonly ILanguageFactory _languageFactory;
@@ -54,6 +48,7 @@ namespace CSharpToday.Blazor.MultiLang
 
         private bool IsLanguageGroup(IResourceGroup group) =>
             group.Extension == ".json"
-            && _allLanguages.Value.Contains(group.Name);
+            && group.Name is not null
+            && group.Name.Length == 2;
     }
 }
